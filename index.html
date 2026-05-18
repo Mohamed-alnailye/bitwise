@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitwise | ريادة الحلول التقنية والأنظمة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --primary-light: #1e293b;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --text-gray: #64748b;
+            --bg-light: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-light);
+            color: #333;
+            line-height: 1.7;
+        }
+
+        /* شريط التنقل */
+        nav {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            direction: ltr;
+        }
+        .logo span { color: var(--accent-purple); }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--accent-cyan); }
+
+        /* القسم الرئيسي */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.95) 100%), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            color: white;
+            margin-top: 0;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            color: #cbd5e1;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: var(--accent-cyan);
+            display: block;
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* قسم الخدمات */
+        .services { padding: 100px 8%; background-color: white; }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: var(--bg-light);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid #e2e8f0;
+        }
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-color: var(--accent-purple);
+        }
+        .service-icon {
+            font-size: 3.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            transition: transform 0.4s ease, color 0.4s ease;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+            color: var(--accent-purple);
+        }
+        .service-card h3 { font-size: 1.5rem; color: var(--primary-dark); margin-bottom: 15px; }
+        .service-card p { color: var(--text-gray); font-size: 1rem; }
+
+        /* قسم لماذا نحن */
+        .features { padding: 80px 8%; background-color: var(--primary-dark); color: white; }
+        .features .section-title { color: white; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+        .feature-item i { font-size: 3rem; color: var(--accent-cyan); margin-bottom: 15px; }
+        .feature-item h4 { font-size: 1.3rem; margin-bottom: 10px; }
+
+        /* قسم نموذج التواصل */
+        .contact-form-section {
+            padding: 80px 8%;
+            background-color: var(--bg-light);
+        }
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .input-group label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 1rem;
+        }
+        .contact-form input,
+        .contact-form select,
+        .contact-form textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--bg-light);
+        }
+        .contact-form input:focus,
+        .contact-form select:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        /* التذييل وطرق التواصل */
+        footer {
+            background-color: #0b0f19;
+            color: #cbd5e1;
+            padding: 60px 8% 20px;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-info, .footer-contact { flex: 1; min-width: 250px; }
+        .footer-info h2 {
+            color: white; font-size: 2rem; margin-bottom: 20px; direction: ltr; display: inline-block;
+        }
+        .footer-info p { margin-bottom: 15px; color: #94a3b8; }
+        .footer-contact h3 {
+            color: white; font-size: 1.5rem; margin-bottom: 25px; border-bottom: 2px solid var(--accent-purple); display: inline-block; padding-bottom: 5px;
+        }
+        .contact-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; font-size: 1.1rem; }
+        .contact-item i { color: var(--accent-cyan); font-size: 1.5rem; width: 25px; text-align: center; margin-top: 5px;}
+        .contact-item a, .contact-item span { color: #cbd5e1; text-decoration: none; transition: color 0.3s ease; line-height: 1.6;}
+        .contact-item a:hover { color: white; }
+        .ltr-text { direction: ltr; display: inline-block; text-align: left; }
+        .copyright { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; color: #64748b; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .nav-links { display: none; }
+            .section-title { font-size: 2rem; }
+            .footer-content { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo"><i class="fa-solid fa-microchip"></i> bit<span>wise</span></a>
+        <div class="nav-links">
+            <a href="#hero">الرئيسية</a>
+            <a href="#services">خدماتنا</a>
+            <a href="#features">مميزاتنا</a>
+            <a href="#contact-us">تواصل معنا</a>
+        </div>
+    </nav>
+
+    <header id="hero" class="hero">
+        <h1>نُهندس المستقبل الرقمي لمؤسستك</h1>
+        <p>شركة Bitwise هي الوجهة الأولى في ليبيا لتطوير الأنظمة البرمجية المتقدمة، وبناء البنية التحتية للشبكات الموثوقة. نمكّن أعمالك من النمو بأحدث التقنيات.</p>
+        <a href="#contact-us" class="btn-primary">اطلب استشارتك التقنية الآن</a>
+    </header>
+
+    <section id="services" class="services">
+        <h2 class="section-title">حلول متكاملة لنجاحك</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fa-solid fa-file-invoice-dollar service-icon"></i>
+                <h3>الأنظمة المالية والإدارية</h3>
+                <p>برمجة وتطوير أنظمة المحاسبة، وتخطيط الموارد (ERP)، وإدارة شؤون الموظفين المصممة خصيصاً لتلبي الدورة المستندية لشركتك بدقة عالية.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-network-wired service-icon"></i>
+                <h3>هندسة وتأسيس الشبكات</h3>
+                <p>تصميم وتمديد شبكات السيرفرات (LAN/WAN)، تجهيز كبائن الاتصالات، وتركيب أجهزة التوجيه لضمان سرعة واستقرار تدفق البيانات.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-shield-halved service-icon"></i>
+                <h3>الأمن السيبراني وحماية البيانات</h3>
+                <p>تأمين البنية التحتية ضد الاختراقات، إعداد أنظمة الجدران النارية (Firewalls)، وتوفير حلول النسخ الاحتياطي الآمن والمشفر.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-cash-register service-icon"></i>
+                <h3>أنظمة نقاط البيع (POS)</h3>
+                <p>توريد وتركيب أجهزة وأنظمة نقاط البيع المتكاملة للمحلات التجارية والمطاعم، مع ربط مباشر بنظام المخازن والمحاسبة المركزي.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-cloud service-icon"></i>
+                <h3>إدارة الخدمات السحابية</h3>
+                <p>تصميم وإدارة البنية التحتية السحابية باستخدام منصات عالمية رائدة مثل <span class="ltr-text" style="font-weight: bold; color: var(--accent-cyan);">AWS</span> و <span class="ltr-text" style="font-weight: bold; color: var(--accent-cyan);">Microsoft Azure</span>، لضمان استقرار ومرونة وأمان أنظمتك.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-laptop-code service-icon"></i>
+                <h3>الاستشارات والتحول الرقمي</h3>
+                <p>نقدم استشارات تقنية متخصصة للمؤسسات لتقييم البنية الحالية، وتطوير استراتيجيات تكنولوجية تساهم في تقليل التكاليف وزيادة الإنتاجية.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2 class="section-title">لماذا Bitwise؟</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fa-solid fa-gears"></i>
+                <h4>حلول مخصصة</h4>
+                <p>لا نعتمد قوالب جاهزة، بل نبني أنظمتنا لتناسب حجم وطبيعة عملك بدقة.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fa-solid fa-headset"></i>
+                <h4>دعم فني محلي مستمر</h4>
+                <p>فريقنا متواجد دائماً لتقديم الصيانة والدعم الفني السريع لضمان عدم تعطل أعمالك.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fa-solid fa-check-double"></i>
+                <h4>جودة واعتمادية</h4>
+                <p>نستخدم أحدث التقنيات وأفضل المعدات القياسية العالمية في بناء الشبكات والأنظمة.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم نموذج التواصل -->
+    <section id="contact-us" class="contact-form-section">
+        <h2 class="section-title">اطلب خدمتك أو استشارتك</h2>
+        <div class="form-container">
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="contact-form">
+                
+                <div class="input-group">
+                    <label for="name">الاسم الكامل / اسم الشركة *</label>
+                    <input type="text" id="name" name="الاسم" placeholder="اكتب اسمك أو اسم شركتك" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="phone">رقم الهاتف *</label>
+                    <input type="tel" id="phone" name="الهاتف" placeholder="مثال: 0910000000" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="email" id="email" name="البريد" placeholder="example@domain.com">
+                </div>
+
+                <div class="input-group">
+                    <label for="service">نوع الخدمة المطلوبة *</label>
+                    <select id="service" name="الخدمة" required>
+                        <option value="" disabled selected>-- يرجى اختيار الخدمة --</option>
+                        <option value="الأنظمة المالية والإدارية">الأنظمة المالية والإدارية</option>
+                        <option value="هندسة وتأسيس الشبكات">هندسة وتأسيس الشبكات</option>
+                        <option value="الأمن السيبراني">الأمن السيبراني</option>
+                        <option value="أنظمة نقاط البيع POS">أنظمة نقاط البيع (POS)</option>
+                        <option value="إدارة الخدمات السحابية">إدارة الخدمات السحابية</option>
+                        <option value="استشارة تقنية / أخرى">استشارة تقنية / خدمات أخرى</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="message">رسالتك / تفاصيل طلبك *</label>
+                    <textarea id="message" name="الرسالة" rows="5" placeholder="اكتب تفاصيل طلبك أو استفسارك هنا..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; text-align: center;">إرسال الطلب الآن</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h2>bit<span style="color: var(--accent-purple);">wise</span></h2>
+                <p>شريكك الاستراتيجي في رحلة التحول الرقمي. نحن نجمع بين الشغف التكنولوجي والخبرة العملية لتقديم حلول ذكية ترتقي بأداء المؤسسات في ليبيا.</p>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>بيانات التواصل</h3>
+                <div class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <a href="mailto:info@bitwise.ly" class="ltr-text">info@bitwise.ly</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <a href="tel:+218919643009" class="ltr-text">+218 91 964 3009</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <a href="tel:+218943951480" class="ltr-text">+218 94 395 1480</a>
+                </div>
+                <!-- تعديل العنوان هنا -->
+                <div class="contact-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>ليبيا، مدينة البيضاء<br>شارع عبدالمنعم رياض، مجمع القافلة (الطابق الثاني)</span>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 جميع الحقوق محفوظة لشركة Bitwise للحلول التقنية والأنظمة.
+        </div>
+    </footer>
+
+</body>
+</html>
